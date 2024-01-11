@@ -1,0 +1,24 @@
+import base64
+from io import BytesIO
+from PIL import Image
+
+# Beispiel Daten-URL
+data_url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAcklEQVR42mP8z/Cf4nEK/EVEaS6Wq1qppafcwMBB8CjAysZnE6H8MAZtAE1UDwFELQAAIX8LCuAZ6DYAAAAASUVORK5CYII="
+
+# Daten-URL parsen, um MIME-Typ und Base64-kodierte Daten zu extrahieren
+mime_type, base64_data = data_url.split(',')[1].split(';')[0], data_url.split(',')[1]
+
+# Base64-Daten decodieren
+binary_data = base64.b64decode(base64_data)
+
+# Bilddaten in ein BytesIO-Objekt laden
+image_data = BytesIO(binary_data)
+
+# PIL-Bildobjekt erstellen
+image = Image.open(image_data)
+
+# Bild in .jpg konvertieren und speichern
+image.convert('RGB').save('ausgabe.jpg', format='JPEG')
+
+# Optional: Bild anzeigen
+image.show()
