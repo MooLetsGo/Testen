@@ -2,8 +2,12 @@ import base64
 from io import BytesIO
 from PIL import Image
 
-# Beispiel Daten-URL
-data_url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAcklEQVR42mP8z/Cf4nEK/EVEaS6Wq1qppafcwMBB8CjAysZnE6H8MAZtAE1UDwFELQAAIX8LCuAZ6DYAAAAASUVORK5CYII="
+# Dateipfad zur Textdatei
+textfile_path = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\VSCode\\Testen\\ImageToB64\\IMG.txt'
+
+# Daten aus der Textdatei lesen
+with open(textfile_path, 'r') as file:
+    data_url = file.read().strip()
 
 # Daten-URL parsen, um MIME-Typ und Base64-kodierte Daten zu extrahieren
 mime_type, base64_data = data_url.split(',')[1].split(';')[0], data_url.split(',')[1]
