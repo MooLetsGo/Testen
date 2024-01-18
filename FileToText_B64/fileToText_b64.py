@@ -4,6 +4,8 @@ import getopt
 import sys
 import os.path
 
+import pyperclip
+
 #----------------------------------------------------------------------------------------
 
 class bcolors:
@@ -123,3 +125,6 @@ with open(file_name, 'rb') as binary_file:
     base64_encoded_data = base64.b64encode(binary_file_data)
     
     data_url = prefix + base64_encoded_data.decode('utf-8')+postfix_1+postfix_2
+
+pyperclip.copy(data_url)
+print(f"{bcolors.OKGREEN}\r\n*** B64 block successfully copied to clipboard !!! ***\r\n{bcolors.ENDC}")
