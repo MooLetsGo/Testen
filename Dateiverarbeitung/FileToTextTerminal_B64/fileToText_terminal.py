@@ -71,6 +71,7 @@ argvx = sys.argv[1:]
 
 #Init Variablen
 file_name = ''
+outputfile_name = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\FileToText_B64\\encodedFile.txt'
 file_name_def = False
 
 data_url = ''
@@ -115,7 +116,7 @@ if kind is None:
     print(f"{bcolors.WARNING}\r\n*** ERROR Invalid filetype ! ***\r\n{bcolors.ENDC}")
     sys.exit(2)     
 else:
-    prefix = '<' + kind.mime + ';charset=utf-8;base64,'
+    prefix = '<src="data:' + kind.mime + ';charset=utf-8;base64,'
 
 #----------------------------------------------------------------------------------------
 
@@ -126,5 +127,8 @@ with open(file_name, 'rb') as binary_file:
     
     data_url = prefix + base64_encoded_data.decode('utf-8')+postfix_1+postfix_2
 
-pyperclip.copy(data_url)
-print(f"{bcolors.OKGREEN}\r\n*** B64 block successfully copied to clipboard !!! ***\r\n{bcolors.ENDC}")
+with open(outputfile_name, "w") as text_file:
+        text_file.write(data_url)
+        print(f"{bcolors.OKGREEN}\r\n*** Output filename successfully written !!! ***\r\n{bcolors.ENDC}")
+#pyperclip.copy(data_url)
+#print(f"{bcolors.OKGREEN}\r\n*** B64 block successfully copied to clipboard !!! ***\r\n{bcolors.ENDC}")
