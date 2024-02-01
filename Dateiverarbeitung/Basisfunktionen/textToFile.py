@@ -1,7 +1,7 @@
 import base64
 import pyperclip
 
-def textToFileWithGui(dateipfad:str):
+def textToFile(dateipfad:str):
     # Daten aus der Zwischenablage lesen
     data_url = pyperclip.paste()
 

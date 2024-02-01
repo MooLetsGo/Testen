@@ -63,7 +63,7 @@ class bcolors:
     CWHITEBG2  = '\33[107m'
 
 #----------------------------------------------------------------------------------------
-def fileToTextWithGui(dateipfad:str):
+def fileToText(dateipfad:str):
     #Init Variablen
     inputfile_name = dateipfad
 
