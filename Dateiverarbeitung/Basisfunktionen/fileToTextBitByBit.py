@@ -2,7 +2,6 @@ import filetype
 import base64
 import sys
 import os.path
-from numpy import true_divide
 import pyperclip
 import time
 
@@ -73,6 +72,7 @@ prefix = ''
 postfix_1 = '"'
 postfix_2 = '>'
 
+ackStart = 'loslegen'
 ack = 'nextPlease'
 
 blockLength = 5120 #5KB
@@ -111,17 +111,22 @@ with open(inputfile_name, 'rb') as binary_file:
 
 #Segmentdateien B64 kodieren, nacheinander in die Zwischenablage kopieren und wenn nicht mehr benötigt löschen
 #Dateipfad wo die Segmente abgelegt werden für das finale Tool anpassen/ geeignet wählen
-folderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\Testen\\InputFiles'
+inputFolderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\Testen\\InputFiles'
 #Dateipfad evtl. auf Existenz und vorhandenen Inhalt überprüfen
-segmente = os.listdir(folderpath)
+segmente = os.listdir(inputFolderpath)
 
 for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipfad weil das testFile noch da drin liegt
     #Aktuelles Segment base64 kodieren
-    with open(folderpath + '\\' + segmentfile_name, 'rb') as binary_file:
+    with open(inputFolderpath + '\\' + segmentfile_name, 'rb') as binary_file:
         binary_file_data = binary_file.read()
         base64_encoded_data = base64.b64encode(binary_file_data)
         data_url=base64_encoded_data.decode('utf-8')
 
+    if len(segmente) == 10:
+        pyperclip.copy('start')
+        while pyperclip.paste() != ackStart:
+                time.sleep(0.05)
+                
     #Entstandene base64 dataURL in die Zwischenablage schreiben und auf ein acknowledgement warten
     pyperclip.copy(data_url)
     print(f"{bcolors.OKGREEN}\r\n*** B64 block successfully copied to clipboard !!! ***\r\n{bcolors.ENDC}")
@@ -130,10 +135,10 @@ for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipf
 
     #Löschen des aktuellen Segmentes, wenn nicht mehr benötigt (durch das ack wird dies klar); Evtl. Farben für Error Messages noch machen
     try:
-        os.remove(folderpath + '\\' + segmentfile_name)
-        print(f"Segment file '{folderpath + '\\' + segmentfile_name}' deleted successfully.")
+        os.remove(inputFolderpath + '\\' + segmentfile_name)
+        print(f"Segment file '{inputFolderpath + '\\' + segmentfile_name}' deleted successfully.")
     except OSError as e:
-        print(f"Error deleting segment file '{folderpath + '\\' + segmentfile_name}': {e}")
+        print(f"Error deleting segment file '{inputFolderpath + '\\' + segmentfile_name}': {e}")
 
 #postfixbehandlung noch machen  
 
