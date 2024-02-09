@@ -115,6 +115,7 @@ inputFolderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbe
 #Dateipfad evtl. auf Existenz und vorhandenen Inhalt überprüfen
 segmente = os.listdir(inputFolderpath)
 
+i = 1
 for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipfad weil das testFile noch da drin liegt
     #Aktuelles Segment base64 kodieren
     with open(inputFolderpath + '\\' + segmentfile_name, 'rb') as binary_file:
@@ -122,10 +123,12 @@ for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipf
         base64_encoded_data = base64.b64encode(binary_file_data)
         data_url=base64_encoded_data.decode('utf-8')
 
-    if len(segmente) == 10:
+    #"Preamble" um Vorgang abgestimmt mit Send Funktion zu starten
+    if i == 1:
         pyperclip.copy('start')
         while pyperclip.paste() != ackStart:
-                time.sleep(0.05)
+            time.sleep(0.05)
+    i += 1
                 
     #Entstandene base64 dataURL in die Zwischenablage schreiben und auf ein acknowledgement warten
     pyperclip.copy(data_url)
