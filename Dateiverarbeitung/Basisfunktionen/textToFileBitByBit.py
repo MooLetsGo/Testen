@@ -66,11 +66,14 @@ class bcolors:
 #Init Variablen
 outputFolderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\Testen\\OutputFiles'
 segmente = os.listdir(outputFolderpath)
+#"Preamble" um Vorgang abgestimmt mit Send Funktion zu starten
 while pyperclip.paste() != 'start':
-                time.sleep(0.05)
+    time.sleep(0.05)
 pyperclip.copy('loslegen')
+#Pufferzeit (wahrscheinlich nicht notwendig)
 time.sleep(1)
 while len(segmente)<9:
+    segmente = os.listdir(outputFolderpath)#Weil "segmente" sich verändert in jedem Durchlauf neu abfragen
     # Daten aus der Zwischenablage lesen
     data_url = pyperclip.paste()
 
