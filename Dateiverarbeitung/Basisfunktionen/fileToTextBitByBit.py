@@ -97,45 +97,38 @@ else:
     prefix = '<src="data:' + kind.extension + ';charset=utf-8;base64,' #DateiEndung wird angehängt (nicht der MIMEType)
 
 #----------------------------------------------------------------------------------------
-#Prefixbehandlung noch machen
-#Input Datei in Segment-Dateien aufsplitten
-with open(inputfile_name, 'rb') as binary_file:
-        segment_number = 1
-        while True:
-            block_data = binary_file.read(blockLength)
-            if not block_data:
-                break
-            with open(f'{inputfile_name}_segment_{segment_number}', 'wb') as segment_file:
-                segment_file.write(block_data)
-            segment_number += 1
-
-#Segmentdateien B64 kodieren, nacheinander in die Zwischenablage kopieren und wenn nicht mehr benötigt löschen
-#Dateipfad wo die Segmente abgelegt werden für das finale Tool anpassen/ geeignet wählen
-inputFolderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\Testen\\InputFiles'
-#Dateipfad evtl. auf Existenz und vorhandenen Inhalt überprüfen
-segmente = os.listdir(inputFolderpath)
-
-i = 1
-for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipfad weil das testFile noch da drin liegt
+while True:
+    #Prefixbehandlung noch machen
+        
+    #Input Datei in Segment-Dateien aufsplitten
+    segment_number = 1
+    with open(inputfile_name, 'rb') as binary_file:
+        block_data = binary_file.read(blockLength)
+        if not block_data:
+            break
+        with open(f'{inputfile_name}_segment_{segment_number}', 'wb') as segment_file:
+            segment_file.write(block_data)
+    #Generierte Segmentdatei Versenden
+    #Segmentdateien B64 kodieren, nacheinander in die Zwischenablage kopieren und wenn nicht mehr benötigt löschen
+    #Dateipfad wo die Segmente abgelegt werden für das finale Tool anpassen/ geeignet wählen
+    inputFolderpath = 'C:\\Users\\morit\\OneDrive\\Studium\\6. Semester\\Studienarbeit 2\\Umsetzung\\VSCode\\Testen\\Testen\\InputFiles'
+    #Dateipfad evtl. auf Existenz und vorhandenen Inhalt überprüfen
+    segmente = os.listdir(inputFolderpath)
+    segmentfile_name = segmente[1]#[1] Anweisung nur wegen aktuellem Dateipfad weil das testFile noch da drin liegt
+    #"Preamble" um Vorgang abgestimmt mit Send Funktion zu starten
+    pyperclip.copy('start')
+    while pyperclip.paste() != ackStart:
+        time.sleep(0.05)
     #Aktuelles Segment base64 kodieren
     with open(inputFolderpath + '\\' + segmentfile_name, 'rb') as binary_file:
         binary_file_data = binary_file.read()
         base64_encoded_data = base64.b64encode(binary_file_data)
         data_url=base64_encoded_data.decode('utf-8')
-
-    #"Preamble" um Vorgang abgestimmt mit Send Funktion zu starten
-    if i == 1:
-        pyperclip.copy('start')
-        while pyperclip.paste() != ackStart:
-            time.sleep(0.05)
-    i += 1
-                
     #Entstandene base64 dataURL in die Zwischenablage schreiben und auf ein acknowledgement warten
     pyperclip.copy(data_url)
     print(f"{bcolors.OKGREEN}\r\n*** B64 block successfully copied to clipboard !!! ***\r\n{bcolors.ENDC}")
     while pyperclip.paste() != ack:
             time.sleep(0.05)
-
     #Löschen des aktuellen Segmentes, wenn nicht mehr benötigt (durch das ack wird dies klar); Evtl. Farben für Error Messages noch machen
     try:
         os.remove(inputFolderpath + '\\' + segmentfile_name)
@@ -143,5 +136,12 @@ for segmentfile_name in segmente[1:]:#[1:] Anweisung nur wegen aktuellem Dateipf
     except OSError as e:
         print(f"Error deleting segment file '{inputFolderpath + '\\' + segmentfile_name}': {e}")
 
-#postfixbehandlung noch machen  
+    #postfixbehandlung noch machen  
+    segment_number += 1
+    
+                
+    
+
+    
+
 
